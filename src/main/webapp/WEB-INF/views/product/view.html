@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1>View product:</h1>
+<p><a href="/products">Back to list product</a> </p>
 <img width="150px" height="150px" th:src="@{'/i/' + ${product.image}}">
 <p th:text="${product.name}"></p>
 <p th:text="${product.description}"></p>
