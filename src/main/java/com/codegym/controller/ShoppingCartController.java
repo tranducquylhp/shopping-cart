@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/shoppingcart")
+@RequestMapping(value = "/shoppingcart")
 public class ShoppingCartController {
     @Autowired
     private ProductService productService;
@@ -63,13 +63,12 @@ public class ShoppingCartController {
         return modelAndView;
     }
     @PostMapping("/edit-quantity/{id}")
-    public ModelAndView editQuantity(@ModelAttribute Items items, @PathVariable long id,@RequestParam("quantity") int quantity, HttpSession session){
-        ModelAndView modelAndView = new ModelAndView("/shoppingCart/cart");
+    public String editQuantity(@ModelAttribute Items items, @PathVariable long id,@RequestParam("quantity") int quantity, HttpSession session){
         List<Items> cart = (List<Items>) session.getAttribute("cart");
         int index = isExisting(id, session);
         cart.get(index).setQuantity(quantity);
         session.setAttribute("cart", cart);
-        return modelAndView;
+        return "redirect:/shoppingcart/ordernow";
     }
 
     @GetMapping("/delete/{id}")
@@ -83,11 +82,24 @@ public class ShoppingCartController {
     }
 
     @PostMapping("/delete/{id}")
-    public ModelAndView delete(@PathVariable long id, HttpSession session){
-        ModelAndView modelAndView = new ModelAndView("/shoppingCart/cart");
+    public String delete(@PathVariable long id, HttpSession session){
         List<Items> cart = (List<Items>) session.getAttribute("cart");
         int index = isExisting(id, session);
         cart.remove(index);
+        session.setAttribute("cart", cart);
+        return "redirect:/shoppingcart/ordernow";
+    }
+
+    @GetMapping("/deleteAll")
+    public String deleteAll(HttpSession session){
+        session.setAttribute("cart",null);
+        return "redirect:ordernow";
+    }
+
+    @GetMapping("/ordernow")
+    public ModelAndView list(HttpSession session){
+        ModelAndView modelAndView = new ModelAndView("/shoppingCart/cart");
+        List<Items> cart = (List<Items>) session.getAttribute("cart");
         session.setAttribute("cart", cart);
         return modelAndView;
     }

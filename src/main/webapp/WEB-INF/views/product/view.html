@@ -8,9 +8,13 @@
 <h1>View product:</h1>
 <p><a href="/products">Back to list product</a> </p>
 <img width="150px" height="150px" th:src="@{'/i/' + ${product.image}}">
-<p th:text="${product.name}"></p>
-<p th:text="${product.description}"></p>
-<p th:text="${product.price}"></p>
+<br>
+Name: <span th:text="${product.name}"></span>
+<br>
+Description: <span th:text="${product.description}"></span>
+<br>
+Price: <span th:text="${product.price}"></span>
+<br>
 <p><a th:href="@{/shoppingcart/ordernow/__${product.id}__}">OrderNow</a></p>
 </body>
 </html>
